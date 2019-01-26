@@ -1,53 +1,50 @@
 console.log('Starting App.js!');
 
 const fs = require('fs');
-// const os = require('os');
+
 const _ = require('lodash');
 const notes = require('./notes.js');
 const yargs = require('yargs');
 const argv = yargs.argv;
-// console.log(process.argv);
+
 
 var command = argv._[0];
-console.log('command: ',command);
-console.log('process: ',process.argv);
-console.log('yargs',argv);
+console.log('command: ', command);
 
-if(command === 'add'){
-    // console.log(`adding nodes`);
-    notes.addNote(argv.title,argv.body);
+console.log('yargs', argv);
+
+if (command === 'add') {
+
+    var note = notes.addNote(argv.title, argv.body);
+    if (note) {
+        console.log(`Note Added`);
+        notes.logNote(note);
+    } else {
+        console.log(`Note Title is already taken, try with different title`);
+    }
 }
-else if(command === 'list'){
-    // console.log('listing a list');
-    notes.getAll();
+else if (command === 'list') {
+
+   var allNotes =  notes.getAll();
+   console.log(`printing ${allNotes.length} note(S).`);
+   allNotes.forEach(note => notes.logNote(note));
 }
-else if(command === 'remove'){
-    notes.removeNote(argv.title);
-    // console.log('removing a list');
+else if (command === 'remove') {
+    var noteRemoved = notes.removeNote(argv.title);
+    var message = noteRemoved ? 'Note was removed' : 'Cannot find a Note'
+    console.log(message);
+
 }
-else if(command === 'read'){
-    notes.getNote(argv.title);
-    // console.log('reading a list');
+else if (command === 'read') {
+    var note = notes.getNote(argv.title);
+    if(note){
+        console.log('Note Found');
+        notes.logNote(note);
+    } else {
+        console.log('Not Found');
+    }
+
 }
-else{
+else {
     console.log(`command not recoginzed`);
 }
-// var res = notes.addNote();
-
-// console.log(_.isString(true));
-// console.log(_.isString('true'));
-
-// var filteredArray = _.uniq(['Hassan']);
-// console.log(filteredArray);
-
-// console.log(res);
-
-// console.log('results' , notes.add(9,-7));
-
-// var user = os.userInfo();
-// console.log(user);
-// console.log(os.arch());
-
-
-// console.log(os.constants);
-// fs.appendFileSync('greeting.txt',`Hello ${user.username}! you are ${notes.age}.`);
